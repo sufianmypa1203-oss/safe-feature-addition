@@ -1,0 +1,3 @@
+# Toolkit Script Dependencies
+js-yaml==3.14.1
+# Node.js dependencies are managed via package.json in production environments

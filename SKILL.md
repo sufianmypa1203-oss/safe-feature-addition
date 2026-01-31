@@ -16,6 +16,13 @@ metadata:
 
 Guides you through adding new features to existing production software using industry-proven patterns that protect current functionality. Implements additive development philosophy, feature flag strategies, modern deployment techniques (canary, blue-green), and refactoring patterns (Strangler Fig, Branch by Abstraction) used by top engineering teams.
 
+### 🧰 Production Toolkit Assets
+This skill is supported by a comprehensive toolkit located in the `production/safe-feature-addition/` directory:
+-   **[verify-flags.js](./scripts/verify-flags.js)**: scan your codebase for feature flag consistency.
+-   **[canary-rollout.sh](./scripts/canary-rollout.sh)**: Template for managing gradual traffic shifts.
+-   **[Examples Library](./examples/)**: Runnable implementations of the patterns described below.
+-   **[README.md](./README.md)**: Toolkit overview and quick start guide.
+
 ## When To Use This
 
 - Adding features to existing production applications
@@ -147,6 +154,9 @@ Feature flags wrap new code in conditionals, letting you deploy to production wh
 
 #### Basic Implementation
 
+> [!TIP]
+> Use the **[verify-flags.js](./scripts/verify-flags.js)** script to ensure all flags used in your code are properly defined in your configuration files before deployment.
+
 **JavaScript/TypeScript:**
 ```typescript
 // Simple flag check
@@ -268,6 +278,8 @@ For major changes, use these proven architectural patterns:
 **How it works:** Build new functionality alongside old code, gradually routing traffic to new implementation until legacy code can be removed.
 
 **Example: Migrating from Monolith to Microservices**
+> [!NOTE]
+> See a runnable Node.js implementation in **[examples/strangler-fig/gateway.js](./examples/strangler-fig/gateway.js)**.
 
 ```mermaid
 graph TD
@@ -311,6 +323,8 @@ graph TD
 **How it works:** Introduce abstraction layer both old and new implementations satisfy. Gradually migrate callers to abstraction, then swap implementations.
 
 **Example: Switching from REST to GraphQL**
+> [!NOTE]
+> See a concrete patterns in **[examples/branch-by-abstraction/DataStore.ts](./examples/branch-by-abstraction/DataStore.ts)**.
 
 ```javascript
 // Step 1: Create abstraction
@@ -525,6 +539,9 @@ aws elbv2 modify-listener \
 #### Strategy B: Canary Deployment (Gradual Rollouts)
 
 **How it works:** Traffic gradually shifts from old to new version over minutes/hours/days. Deploy to small subset first, monitor, then incrementally roll out to everyone.
+
+> [!TIP]
+> Use the **[canary-rollout.sh](./scripts/canary-rollout.sh)** script as a starting point for automating this process in your CI/CD pipeline.
 
 ```mermaid
 graph TD
