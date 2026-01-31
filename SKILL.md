@@ -1,7 +1,7 @@
 ---
 name: safe-feature-addition
-description: Elite guide for shipping features without breaking production. Implements "Additive over Destructive" development, Unified Safety Auditing, and Feature Flags.
-version: 3.0.0
+description: Elite guide for shipping features without breaking production. Universal patterns for JS, TS, Python, Go, Rust, and more. Implements "Additive over Destructive" development, Unified Safety Auditing, and Feature Flags.
+version: 3.1.0
 author: sufianmypa1203-oss
 quality_score: 100
 triggers:
@@ -9,13 +9,15 @@ triggers:
   - "don't break production"
   - "feature flags"
   - "safe rollout"
+  - "strangler fig"
+  - "branch by abstraction"
 ---
 
 # 🛡️ Safe Feature Addition: Ship Without Breaking
 
 ## What This Does
 
-This skill provides an **Elite-Grade Safety Net** for adding new features to production systems. It implements an **"Additive Development"** philosophy where new code lives alongside old code, protected by feature flags and gradual rollouts.
+This skill provides a **Universal Safety Net** for adding new features to production systems across any framework or language. It implements an **"Additive Development"** philosophy where new code lives alongside old code, protected by feature flags and gradual rollouts.
 
 > [!IMPORTANT]
 > **The Golden Rule:** Always favor *additive* changes over *destructive* modifications. Existing code should remain untouched and functional.
@@ -24,7 +26,7 @@ This skill provides an **Elite-Grade Safety Net** for adding new features to pro
 
 ## 🏗️ The Production Toolkit
 
-This skill is powered by a unified safety engine located in `production/safe-feature-addition/`:
+This skill is powered by a unified safety engine compatible with **JS, TS, Python, Go, Rust, and Ruby**:
 
 | Tool | Purpose |
 |------|---------|
@@ -34,21 +36,25 @@ This skill is powered by a unified safety engine located in `production/safe-fea
 
 ---
 
-## 🚀 Step 1: Additive Development
+## 🚀 Step 1: Additive Development (Universal)
 
 Instead of changing an existing function, extend it or create a new one.
 
+### JavaScript / TypeScript
 ```javascript
-// ❌ DESTRUCTIVE - Breaks existing callers
-function processPayment(amount) {
-  return crypto(amount); 
-}
-
 // ✅ ELITE & ADDITIVE - Backward compatible
 function processPayment(amount, method = 'credit-card') {
   if (method === 'crypto') return crypto(amount);
   return legacyPayment(amount);
 }
+```
+
+### Python
+```python
+# ✅ ELITE & ADDITIVE - Backward compatible
+def process_payment(amount, method='credit_card'):
+    if method == 'crypto': return crypto(amount)
+    return legacy_payment(amount)
 ```
 
 ---
@@ -57,24 +63,25 @@ function processPayment(amount, method = 'credit-card') {
 
 Wrap all new logic in feature flags. This allows you to deploy code to production while it is still "dormant".
 
-### 1. Define the Flag
+### 1. Define the Flag (YAML/JSON)
 ```yaml
 # feature-flags.yml
-new_dashboard:
+new_feature_v2:
   enabled: false
-  rollout_percentage: 0  # Start at 0%
+  rollout_percentage: 0  # Start at 0% traffic
 ```
 
 ### 2. Guard the Code
 ```typescript
-if (flags.isEnabled('new-dashboard', user.id)) {
-  return <NewDashboard />;
+// Works in React, Vue, Svelte, etc.
+if (flags.isEnabled('new-feature-v2', user.id)) {
+  return <NewComponent />;
 }
-return <LegacyDashboard />;
+return <LegacyComponent />;
 ```
 
 ### 3. Verify Deployment
-Before you ship, run the safety check:
+Before you ship, run the safety check to ensure config matches code:
 ```bash
 python scripts/safe-feature.py verify --path ./src --config ./feature-flags.yml
 ```
@@ -83,11 +90,11 @@ python scripts/safe-feature.py verify --path ./src --config ./feature-flags.yml
 
 ## 🔍 Step 3: Git Safety Audit
 
-Before merging your PR, run the **Safety Auditor** to detect destructive changes that might break production.
+Before merging your PR, run the **Universal Safety Auditor** to detect destructive changes that might break production.
 
 ```bash
-# Audits your current branch against master
-python scripts/safe-feature.py audit --base master
+# Audits your current branch against master/main
+python scripts/safe-feature.py audit --base main
 ```
 
 **The Auditor detects:**
@@ -97,9 +104,9 @@ python scripts/safe-feature.py audit --base master
 
 ---
 
-## 📈 Step 4: Gradual Rollout (Canary)
+## 📈 Step 4: Gradual Rollout (Canary Schedule)
 
-Never switch a feature to 100% on Day 1. Use a gradual schedule:
+Never switch a feature to 100% on Day 1. Use an industry-standard gradual schedule:
 
 | Phase | Traffic | Duration | Goal |
 |-------|---------|----------|------|
@@ -107,17 +114,6 @@ Never switch a feature to 100% on Day 1. Use a gradual schedule:
 | **Early Bird** | 25% | 1 day | Check for performance bugs |
 | **Rollout** | 50% | 2 days | Monitor business metrics |
 | **GA** | 100% | Permanent | Complete the rollout |
-
----
-
-## 🎯 Vue Money Example: Adding "Credit Cards"
-
-If you are adding Credit Card support to Vue Money while it only has Auto Loans:
-
-1.  **Don't** rewrite the `LoanCard` component.
-2.  **Do** create `CreditCardSpecificCard`.
-3.  **Flag it**: `enable-credit-cards`.
-4.  **Audit**: Run `safe-feature audit` to ensure `getLoans()` wasn't broken by the new data.
 
 ---
 
